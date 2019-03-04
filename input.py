@@ -9,6 +9,7 @@ class Input:
 
         self.input = QtWidgets.QLineEdit()
         self.input.setFont(FONT)
+        self.input.setReadOnly(True)
 
         self.box = QtWidgets.QVBoxLayout()
         self.box.addWidget(self.label)

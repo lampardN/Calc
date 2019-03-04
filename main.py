@@ -2,6 +2,7 @@ from PyQt5 import QtWidgets
 from buttons import Button
 from config import *
 from input import Input
+from calc import *
 
 
 class MainWindow(QtWidgets.QDialog):
@@ -28,6 +29,9 @@ class MainWindow(QtWidgets.QDialog):
         self.setLayout(mainBox)
 
     def simpleButtonPress(self, value):
+        if self.Input.input.text() == 'Error':
+            self.Input.input.setText('')
+            self.Input.input.displayText()
         self.Input.input.insert(value)
 
     def clearButtonPress(self, value):
@@ -35,7 +39,10 @@ class MainWindow(QtWidgets.QDialog):
         self.Input.input.displayText()
 
     def mathButtonPress(self, value):
-        print('Нажата кнопка вычисления выражения.')
+        self.Input.input.setText(progress(self.Input.input.text()))
+        self.Input.input.displayText()
+
+
 
 
 if __name__ == '__main__':
