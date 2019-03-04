@@ -52,7 +52,10 @@ def progress(stroka):
                     number = ''
             if not('0' <= symbol <= '9'):
                 a.append(symbol)
-        a.append(int(number))
+        try:
+            a.append(int(number))
+        except:
+            pass
 
         pfx = []
         stack = []
@@ -71,7 +74,6 @@ def progress(stroka):
                     else:
                         while len(stack) != 0:
                             if stack[-1] == '(':
-                                del stack[-1]
                                 break
                             pfx.append(stack.pop())
                         stack.append(element)
