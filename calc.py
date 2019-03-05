@@ -39,6 +39,19 @@ def progress(stroka):
         except:
             pass
 
+        if a[0] == '-' and type(a[1]) == type(1):
+            a[1] = -a[1]
+            del a[0]
+
+        for i in range(1, len(a)):
+            if a[i] == '-':
+                if type(a[i-1]) != type(1) and type(a[i+1]) == type(1):
+                    a[i+1] = -a[i+1]
+                    a[i] = '@'
+        while a.count('@') != 0:
+            del a[a.index('@')]
+
+
         pfx = []
         stack = []
 
@@ -100,6 +113,17 @@ def progress(stroka):
                 i = 0
                 continue
             i += 1
+            if len(pfx) == 2:
+                if pfx[1] == '+':
+                    del pfx[1]
+                    continue
+                elif pfx[1] == '-':
+                    pfx[0] = -pfx[0]
+                    del pfx[1]
+                    continue
+        print(pfx[0])
         return str(pfx[0])
     except:
         return 'Error'
+
+progress('-(3/2)*(2/3)')

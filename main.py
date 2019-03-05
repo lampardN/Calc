@@ -8,7 +8,7 @@ from calc import *
 class MainWindow(QtWidgets.QDialog):
     def __init__(self, parent=None):
         QtWidgets.QDialog.__init__(self, parent)
-        global primer
+
         self.Input = Input()
 
         self.hboxes = []
@@ -43,12 +43,11 @@ class MainWindow(QtWidgets.QDialog):
         self.Input.input.displayText()
 
 
-
-
 if __name__ == '__main__':
     from sys import *
     app = QtWidgets.QApplication(argv)
     window = MainWindow()
     window.setWindowTitle('Calc')
+    window.setFixedSize(300, 300)
     window.show()
     exit(app.exec_())
