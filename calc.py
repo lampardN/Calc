@@ -14,46 +14,28 @@ def priority(symbol):
     if symbol == '(':
         return 0
 
-'''
-def test(str):
-    a = str
-    t = []
-    if a.count('(') > 0:
-        for i in range(len(a)):
-            if a[i] == '(' or a[i] == ')':
-                t.append(a[i])
-    e = -1
-    for s in range(len(t)):
-        if t[s] == '(' and t[e] == ')':
-            t[s] = '@'
-            t[e] = '@'
-            e -= 1
-        if t[s] == '(' and t[s+1] == ')':
-            t[s] == '@'
-            t[s+1] == '@'
-    while t.count('@') != 0:
-        del t[t.index('@')]
-    if len(t) != 0:
-       return input('Error')
-    else:
-        return 0
-'''
 
 def progress(stroka):
     try:
         a = []
         number = ''
         for symbol in stroka:
-            if '0' <= symbol <= '9':
+            if '0' <= symbol <= '9' or symbol == '.':
                 number += symbol
             else:
                 if number != '':
-                    a.append(int(number))
+                    if '.' in number:
+                        a.append(float(number))
+                    else:
+                        a.append(int(number))
                     number = ''
-            if not('0' <= symbol <= '9'):
+            if not('0' <= symbol <= '9') and symbol != '.':
                 a.append(symbol)
         try:
-            a.append(int(number))
+            if '.' in number:
+                a.append(float(number))
+            else:
+                a.append(int(number))
         except:
             pass
 
@@ -61,7 +43,7 @@ def progress(stroka):
         stack = []
 
         for element in a:
-            if isinstance(element, int):
+            if isinstance(element, int) or isinstance(element, float):
                 pfx.append(element)
 
             if priority(element) == 0:
