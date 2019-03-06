@@ -5,7 +5,8 @@ def priority(symbol):
         return 1
 
     if symbol == '*' \
-            or symbol == '/':
+            or symbol == '/'\
+            or symbol == 'u':
         return 2
 
     if symbol == ')':
@@ -17,27 +18,21 @@ def priority(symbol):
 
 def progress(stroka):
     try:
-        a = []
+        a = ['@']
         number = ''
         for symbol in stroka:
             if '0' <= symbol <= '9' or symbol == '.':
                 number += symbol
             else:
                 if number != '':
-                    if '.' in number:
-                        a.append(float(number))
-                    else:
-                        a.append(int(number))
+                    a.append(number)
                     number = ''
             if not('0' <= symbol <= '9') and symbol != '.':
-                a.append(symbol)
-        try:
-            if '.' in number:
-                a.append(float(number))
-            else:
-                a.append(int(number))
-        except:
-            pass
+                if symbol == '-' and (a[-1] != ')' or not(a[-1] >= '0')):
+                    a.append('u')
+                else:
+                    a.append(symbol)
+        a.append(number)
 
         if a[0] == '-' and type(a[1]) == type(1):
             a[1] = -a[1]
@@ -56,7 +51,11 @@ def progress(stroka):
         stack = []
 
         for element in a:
-            if isinstance(element, int) or isinstance(element, float):
+            if len(pfx) != 0:
+                if stack[-1] == 'u':
+                    pfx[-1] = '-' + pfx[-1]
+                    del stack[-1]
+            if element >= '0' and element != 'u':
                 pfx.append(element)
 
             if priority(element) == 0:
@@ -89,41 +88,37 @@ def progress(stroka):
 
         while len(pfx) != 1:
             if pfx[i] == '+':
-                pfx[i] = pfx[i - 1] + pfx[i - 2]
+                pfx[i] = str(float(pfx[i - 1]) + float(pfx[i - 2]))
                 del pfx[i - 1]
                 del pfx[i - 2]
                 i = 0
                 continue
             if pfx[i] == '-':
-                pfx[i] = pfx[i - 2] - pfx[i - 1]
+                pfx[i] = str(float(pfx[i - 1]) - float(pfx[i - 2]))
                 del pfx[i - 1]
                 del pfx[i - 2]
                 i = 0
                 continue
             if pfx[i] == '/':
-                pfx[i] = pfx[i - 2] / pfx[i - 1]
+                pfx[i] = str(float(pfx[i - 1]) / float(pfx[i - 2]))
                 del pfx[i - 1]
                 del pfx[i - 2]
                 i = 0
                 continue
             if pfx[i] == '*':
-                pfx[i] = pfx[i - 1] * pfx[i - 2]
+                pfx[i] = str(float(pfx[i - 1]) * float(pfx[i - 2]))
                 del pfx[i - 1]
                 del pfx[i - 2]
                 i = 0
                 continue
+            if pfx[i] == 'u':
+                pfx[i-1] = '-' + pfx[i-1]
+                del pfx[i]
+                i = 0
+                continue
             i += 1
-            if len(pfx) == 2:
-                if pfx[1] == '+':
-                    del pfx[1]
-                    continue
-                elif pfx[1] == '-':
-                    pfx[0] = -pfx[0]
-                    del pfx[1]
-                    continue
-        print(pfx[0])
         return str(pfx[0])
     except:
         return 'Error'
 
-progress('-(3/2)*(2/3)')
+progress('-(3*2)/(2*3)')
